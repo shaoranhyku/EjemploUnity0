@@ -3,39 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Move : MonoBehaviour {
-
-    public float speed;
-    private bool isInFloor = false;
+    
+    public float forceValue;
+    private Rigidbody rb;
 
     // Use this for initialization
     void Start () {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
+    void Update()
+    {
+        //transform.Translate(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0 , Input.GetAxis("Vertical") * speed * Time.deltaTime);
+    }
+
     void FixedUpdate()
     {
-        if (Input.GetKey("space") && isInFloor)
-        {
-            GetComponent<Rigidbody>().AddForce(new Vector3(0, 2500, 0));
-        } 
-        transform.Translate(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0 , Input.GetAxis("Vertical") * speed * Time.deltaTime);
+        rb.AddForce(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * forceValue);
     }
 
-    void OnCollisionEnter(Collision collisionInfo)
-    {
-        if (collisionInfo.collider.name.Equals("Suelo"))
-        {
-            isInFloor = true;
-        }
-        
-    }
-
-    void OnCollisionExit(Collision collisionInfo)
-    {
-        if (collisionInfo.collider.name.Equals("Suelo"))
-        {
-            isInFloor = false;
-        }
-    }
 }
