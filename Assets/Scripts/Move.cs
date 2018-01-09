@@ -4,28 +4,38 @@ using UnityEngine;
 
 public class Move : MonoBehaviour {
 
-    public float speed = 1;
-
-    private Rigidbody rb;
+    public float speed;
+    private bool isInFloor = false;
 
     // Use this for initialization
     void Start () {
-        rb = GetComponent<Rigidbody>();
+        
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-
-        rb.AddForce(movement * speed);
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey("space") && isInFloor)
         {
-            rb.AddForce(0, 10, 0);
+            GetComponent<Rigidbody>().AddForce(new Vector3(0, 2500, 0));
+        } 
+        transform.Translate(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0 , Input.GetAxis("Vertical") * speed * Time.deltaTime);
+    }
+
+    void OnCollisionEnter(Collision collisionInfo)
+    {
+        if (collisionInfo.collider.name.Equals("Suelo"))
+        {
+            isInFloor = true;
+        }
+        
+    }
+
+    void OnCollisionExit(Collision collisionInfo)
+    {
+        if (collisionInfo.collider.name.Equals("Suelo"))
+        {
+            isInFloor = false;
         }
     }
 }
