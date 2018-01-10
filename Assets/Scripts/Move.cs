@@ -5,6 +5,7 @@ using UnityEngine;
 public class Move : MonoBehaviour {
     
     public float forceValue;
+    public float jumpValue;
     private Rigidbody rb;
 
     // Use this for initialization
@@ -15,7 +16,11 @@ public class Move : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //transform.Translate(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0 , Input.GetAxis("Vertical") * speed * Time.deltaTime);
+        if (Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.01f)
+        {
+            rb.AddForce(Vector3.up * jumpValue, ForceMode.Impulse);
+        }
+        
     }
 
     void FixedUpdate()
