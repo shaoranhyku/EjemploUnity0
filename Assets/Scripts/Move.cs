@@ -10,6 +10,7 @@ public class Move : MonoBehaviour {
     private Rigidbody rb;
     private AudioSource audiosource;
     private GameObject capsules;
+    private Color capsuleColor;
 
     // Use this for initialization
     void Start () {
@@ -42,6 +43,8 @@ public class Move : MonoBehaviour {
         }
         else if (collision.gameObject.CompareTag("Capsule"))
         {
+            capsuleColor = collision.gameObject.GetComponent<MeshRenderer>().material.GetColor("_Color");
+            collision.gameObject.GetComponent<MeshRenderer>().material.SetColor("_Color",Color.red);
             collision.gameObject.GetComponent<MeshRenderer>().material.color *= 2f;
             collision.gameObject.GetComponent<AudioSource>().Play();
         }
@@ -53,6 +56,7 @@ public class Move : MonoBehaviour {
         if (collision.gameObject.CompareTag("Capsule"))
         {
             collision.gameObject.GetComponent<MeshRenderer>().material.color /= 2f;
+            collision.gameObject.GetComponent<MeshRenderer>().material.SetColor("_Color", capsuleColor);
         }
     }
 
@@ -66,7 +70,9 @@ public class Move : MonoBehaviour {
                 child.gameObject.GetComponent<CapsuleCollider>().enabled = true;
             }
         }
-        Instantiate(prefab, new Vector3(Random.Range(-15f, 15f), 4f, Random.Range(-15f, 15f)), Quaternion.identity);
+        GameObject objeto = Instantiate(prefab, new Vector3(Random.Range(-15f, 15f), 4f, Random.Range(-15f, 15f)), Quaternion.identity);
+        //objeto.GetComponent<MeshRenderer>().material.SetColor("_Color", new Color(Random.value, Random.value, Random.value, Random.value));
+        //objeto.GetComponent<Transform>().localScale = new Vector3(Random.Range(1,3), Random.Range(1, 3), Random.Range(1, 3));
     }
 
 }
